@@ -8,6 +8,10 @@
     "es6": true
   },
 
+  globals: {
+    "Phaser": true
+  },
+
   rules: {
     "strict": 0,
     "quotes": [2, "single"],

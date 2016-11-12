@@ -1,3 +1,5 @@
+const runGame = require('./game');
+
 const $playForm = document.getElementById('playForm');
 const $username = document.getElementById('username');
 
@@ -17,3 +19,4 @@ $playForm.onsubmit = function (e) {
   console.log('Game will start here with ' + username + '!');
 };
 
+runGame('game');
