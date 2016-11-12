@@ -1,4 +1,4 @@
-# Node Knockout 2016 Starter
+# Node Knockout 2016 - Asteroids on Steroids
 
 A barebones Node.js app using [Express 4](http://expressjs.com/).
 
