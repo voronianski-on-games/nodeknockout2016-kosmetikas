@@ -1,1 +1,6 @@
+.DS_Store
 node_modules
+*.log
+
+public/build/**/*.js
+public/build/**/*.css

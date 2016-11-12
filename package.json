@@ -1,33 +1,58 @@
 {
   "name": "nko2016-asteroids-on-steroids",
   "version": "0.0.1",
-  "description": "A barebones Node.js app using Express 4",
+  "description": "NKO16 multiplayer 'Asteroids on Steroids' game",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "watch": "npm run watch-postcss & npm run watch-js & npm run watch-server",
+    "build": "npm run build-css && npm run build-js",
+    "watch-js": "watchify ./src/client -o ./public/build/bundle.js -v -d",
+    "watch-server": "nodemon . -w ./src/server",
+    "watch-postcss": "npm run postcss -- -w",
+    "postcss": "postcss --use postcss-import --use postcss-cssnext -o ./public/build/bundle.css ./src/client/index.css",
+    "cssnano": "cssnano < ./public/build/bundle.css > ./public/build/bundle.min.css",
+    "build-css": "npm run postcss && npm run cssnano",
+    "build-js": "NODE_ENV=production browserify ./src/client | uglifyjs -cm > ./public/build/bundle.min.js",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "compression": "^1.6.2",
     "express": "^4.13.3",
+    "griddy.css": "^1.0.1",
     "morgan": "^1.7.0",
-    "swig": "^1.4.2"
+    "normalize.css": "^5.0.0",
+    "swig": "^1.4.2",
+    "versionify-assets": "^0.1.3"
   },
   "engines": {
     "node": "6.7.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/rumblex-community/nodeknockout-2016-starter"
+    "url": "https://github.com/rumblex/nodeknockout2016-kosmetikas"
   },
   "keywords": [
     "node",
     "heroku",
     "express"
   ],
-  "author": "Mark Pundsack",
+  "author": "Kosmetikas Berlin Team",
   "contributors": [
-    "Zeke Sikelianos <zeke@sikelianos.com> (http://zeke.sikelianos.com)",
-    "Jacques Crocker <jacques@nodeknockout.com> (https://www.nodeknockout.com)"
+    "Dmitri Voronianski <dmitri.voronianski@gmail.com>",
+    "Phil Rukin <phil.ficus@gmail.com>"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^13.1.1",
+    "contrabass.css": "^1.0.4",
+    "cssnano-cli": "^1.0.5",
+    "nodemon": "^1.11.0",
+    "postcss": "^5.2.5",
+    "postcss-cli": "^2.6.0",
+    "postcss-cssnext": "^2.8.0",
+    "postcss-import": "^8.2.0",
+    "uglify-js": "^2.7.4",
+    "watchify": "^3.7.0"
+  }
 }

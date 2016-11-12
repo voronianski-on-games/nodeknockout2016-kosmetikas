@@ -1,8 +1,6 @@
 # Node Knockout 2016 - Asteroids on Steroids
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
-
-Tuned to run on EngineYard Cloud.
+> NKO16 multiplayer "Asteroids on Steroids" game.
 
 ## Running Locally
 
