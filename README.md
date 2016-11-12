@@ -2,15 +2,11 @@
 
 > NKO16 multiplayer "Asteroids on Steroids" game.
 
-## Running Locally
-
-Make sure you have [Node.js](http://nodejs.org/) installed (uses version `4.4.5`).
+## Development
 
 ```sh
-git clone git@github.com:rumblex/nodeknockout2016-kosmetikas.git # or clone your own fork
-cd nodeknockout2016-kosmetikas
 npm install
-npm start
+npm run watch
 ```
 
 Your app should now be running on [localhost:5000](http://localhost:5000/).
@@ -19,14 +15,13 @@ Your app should now be running on [localhost:5000](http://localhost:5000/).
 
 Log into <https://cloud.engineyard.com>. Navigate to your Team's Application, and click "Deploy".
 
-
-## Supported Node.js versions
+### Supported Node.js versions
 
 Please use one of these Node.js versions
 
 4.4.5, 4.6.0, 5.11.0, 6.4.0, 6.7.0
 
-## Documentation
+### Documentation
 
 For more information about using Node.js on EngineYard, check out these articles
 

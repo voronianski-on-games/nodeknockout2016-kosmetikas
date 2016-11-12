@@ -7,13 +7,13 @@
     "start": "node index.js",
     "watch": "npm run watch-postcss & npm run watch-js & npm run watch-server",
     "build": "npm run build-css && npm run build-js",
-    "watch-js": "watchify ./src/client -o ./public/build/bundle.js -v -d",
-    "watch-server": "nodemon . -w ./src/server",
+    "watch-js": "./node_modules/.bin/watchify ./src/client -o ./public/build/bundle.js -v -d",
+    "watch-server": "./node_modules/.bin/nodemon . -w ./src/server",
     "watch-postcss": "npm run postcss -- -w",
-    "postcss": "postcss --use postcss-import --use postcss-cssnext -o ./public/build/bundle.css ./src/client/index.css",
-    "cssnano": "cssnano < ./public/build/bundle.css > ./public/build/bundle.min.css",
+    "postcss": "./node_modules/.bin/postcss --use postcss-import --use postcss-cssnext -o ./public/build/bundle.css ./src/client/index.css",
+    "cssnano": "./node_modules/.bin/cssnano < ./public/build/bundle.css > ./public/build/bundle.min.css",
     "build-css": "npm run postcss && npm run cssnano",
-    "build-js": "NODE_ENV=production browserify ./src/client | uglifyjs -cm > ./public/build/bundle.min.js",
+    "build-js": "NODE_ENV=production ./node_modules/.bin/browserify ./src/client | ./node_modules/.bin/uglifyjs -cm > ./public/build/bundle.min.js",
     "postinstall": "npm run build"
   },
   "dependencies": {
