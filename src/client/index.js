@@ -1,6 +1,6 @@
 const runGame = require('./game');
 const introAudio = new Audio('./assets/adropday-the_cougar.mp3');
-const gameAudio = new Audio('./assets/uoki-toki–king_of_my_castle.mp3'); // use it when game starts
+// const gameAudio = new Audio('./assets/uoki-toki-king_of_my_castle.mp3'); // use it when game starts
 
 introAudio.play();
 introAudio.addEventListener('ended', function () {
