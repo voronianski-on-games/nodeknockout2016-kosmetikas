@@ -1,6 +1,7 @@
 const runGame = require('./game');
 const introAudio = new Audio('./assets/adropday-the_cougar.mp3');
 // const gameAudio = new Audio('./assets/uoki-toki-king_of_my_castle.mp3'); // use it when game starts
+const socket = require('./socket');
 
 introAudio.play();
 introAudio.addEventListener('ended', function () {
@@ -26,6 +27,11 @@ $playForm.onsubmit = function (e) {
 
   introAudio.pause();
   introAudio.currentTime = 0;
+
+  socket.emit('new-user', { username });
+  socket.on('new-user', (user) => {
+    console.log(user);
+  });
 
   console.log('Game will start here with ' + username + '!');
 };

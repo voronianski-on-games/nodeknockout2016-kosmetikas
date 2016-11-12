@@ -1,3 +1,5 @@
+const socket = require('./socket');
+
 module.exports = function runGame(elementId) {
 
   let player;

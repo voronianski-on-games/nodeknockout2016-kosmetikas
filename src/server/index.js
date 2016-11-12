@@ -5,6 +5,8 @@ const logger = require('morgan');
 const serveBase = require('./middlewares/serveBase');
 
 const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
 app.set('port', (process.env.PORT || 5000));
 
@@ -17,6 +19,14 @@ app.use(express.static(path.join(__dirname, '../../public')));
 
 app.get('/', serveBase());
 
-app.listen(app.get('port'), () => {
-  console.log('Node app is running at http://localhost:' + app.get('port'))
+io.on('connection', function(socket) {
+  console.log('a user connected');
+  socket.on('new-user', function(user) {
+    console.log(user);
+    io.emit('new-user', user);
+  });
+});
+
+http.listen(app.get('port'), () => {
+  console.log('Node app is running at http://localhost:' + app.get('port'));
 });
