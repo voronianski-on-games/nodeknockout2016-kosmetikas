@@ -1,9 +1,14 @@
 const env = process.env.NODE_ENV || 'development';
 const versionifyAssets = require('versionify-assets');
 
+const fades = ['fadeIn', 'fadeInDown', 'fadeInUp'];
+
 function handler (title, mainJS, mainCSS) {
   return (req, res) => {
-    res.render('base', {title, mainJS, mainCSS});
+    const randomFadeIndex = Math.floor(Math.random() * fades.length);
+    const randomFade = fades[randomFadeIndex];
+
+    res.render('base', {title, mainJS, mainCSS, randomFade});
   };
 }
 

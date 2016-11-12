@@ -8,7 +8,7 @@
     "watch": "npm run watch-postcss & npm run watch-js & npm run watch-server",
     "build": "npm run build-css && npm run build-js && npm run build-js-min",
     "watch-js": "./node_modules/.bin/watchify ./src/client -o ./public/build/bundle.js -v -d",
-    "watch-server": "./node_modules/.bin/nodemon . -w ./src/server",
+    "watch-server": "./node_modules/.bin/nodemon . -w ./src/server -e js,html",
     "watch-postcss": "npm run postcss -- -w",
     "postcss": "./node_modules/.bin/postcss --use postcss-import --use postcss-cssnext -o ./public/build/bundle.css ./src/client/index.css",
     "cssnano": "./node_modules/.bin/cssnano < ./public/build/bundle.css > ./public/build/bundle.min.css",
@@ -18,6 +18,7 @@
     "postinstall": "npm run build"
   },
   "dependencies": {
+    "animate.css": "^3.5.2",
     "compression": "^1.6.2",
     "express": "^4.13.3",
     "griddy.css": "^1.0.1",

@@ -2,6 +2,8 @@
 
 > NKO16 multiplayer "Asteroids on Steroids" game.
 
+![](http://i.giphy.com/F9qlmEW8p3a7K.gif)
+
 ## Development
 
 ```sh
