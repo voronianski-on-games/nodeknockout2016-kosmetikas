@@ -22,20 +22,20 @@ if (soundEnabled) {
   $noSound.classList.add('active');
 }
 // loop audio
-audio.addEventListener('ended', function () {
+audio.addEventListener('ended', () => {
   audio.currentTime = 0;
   audio.play();
 }, false);
 
 // username form submit
-$playForm.onsubmit = function (e) {
+$playForm.onsubmit = e => {
   e.preventDefault();
 
   const username = $username.value;
 
   if (!username) {
     $playForm.classList.add('shake');
-    setTimeout(function () {
+    setTimeout(() => {
       $playForm.classList.remove('shake');
     }, 1000);
     return;
@@ -48,14 +48,14 @@ $playForm.onsubmit = function (e) {
   }
 
   $intro.classList.add('turn-off');
-  setTimeout(function () {
+  setTimeout(() => {
     $intro.style.display = 'none';
     onPlayCallback(username);
   }, 500);
 };
 
 // toggle audio
-$noSound.onclick = function (e) {
+$noSound.onclick = e => {
   e.preventDefault();
 
   soundEnabled = !soundEnabled;
@@ -70,6 +70,6 @@ $noSound.onclick = function (e) {
   }
 };
 
-exports.onPlay = function (callback) {
+exports.onPlay = callback => {
   onPlayCallback = callback;
 };

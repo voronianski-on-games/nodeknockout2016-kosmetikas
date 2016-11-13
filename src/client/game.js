@@ -100,8 +100,5 @@ module.exports = function runGame (elementId) {
     this.world.wrap(player, 16);
   }
 
-  return new Phaser.Game('100%', '100%', Phaser.CANVAS, elementId, {
-    create: create,
-    update: update
-  });
+  return new Phaser.Game('100%', '100%', Phaser.CANVAS, elementId, {create, update});
 };
