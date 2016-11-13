@@ -52,13 +52,12 @@ function runGame (elementId, user) {
     game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
     game.scale.pageAlignHorizontally = true;
     game.scale.pageAlignVertically = true;
+
+    game.stage.disableVisibilityChange = true;
+    game.raf = new Phaser.RequestAnimationFrame(game, true);
   }
 
   function create() {
-    if (process.env.NODE_ENV !== 'production') {
-      game.stage.disableVisibilityChange = true;
-    }
-
     game.world.setBounds(-1000, -1000, 2000, 2000);
     starfield = game.add.tileSprite(-1000, -1000, 2000, 2000, 'starfield');
 
