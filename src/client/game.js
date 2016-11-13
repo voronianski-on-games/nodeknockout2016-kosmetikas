@@ -49,10 +49,11 @@ function runGame (elementId, user, onDestroy) {
 
   function setHealth(n) {
     health.removeAll();
-    for (let i=0; i<n; i++) {
-      let hSprite = health.create(70 + i*35, 38, game.cache.getBitmapData('userShip'));
-      hSprite.angle=-90;
-      hSprite.scale.setTo(0.75, 0.75);
+
+    for (let i=0; i < n; i++) {
+      const hSprite = health.create(70 + i*35, 36, game.cache.getBitmapData('userShip'));
+      hSprite.angle = -90;
+      hSprite.scale.setTo(0.6, 0.6);
     }
   }
 
