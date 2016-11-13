@@ -3,7 +3,8 @@ const gameloop = require('node-gameloop');
 
 const BULLET_LIFETIME = 2500;
 const BULLET_SPEED = 400;
-const REFRESH_RATE = 1000 / 30;
+const REFRESH_RATE = 1000 / 30; // 30 fps (1000/30ms per frame)
+const SPRITE_SIZE = 32;
 
 const state = {
   users: [],
@@ -19,6 +20,7 @@ function multiplayer (io) {
 
       user.x = Math.random() * 100;
       user.y = Math.random() * 100;
+      user.health = 3;
 
       state.users.push(user);
 
@@ -32,15 +34,18 @@ function multiplayer (io) {
         user.y = data.y;
         user.rotation = data.rotation;
         // console.log(state.users);
-        client.broadcast.emit('sync', state);
+        // client.broadcast.emit('sync', state);
       }
     });
 
-    client.on('shoot', data => {
-      data.bullet.id = uuid.v4();
-      data.bullet.t = Date.now();
-      state.bullets.push(data.bullet);
-      client.broadcast.emit('sync', state);
+    client.on('shoot', bullet => {
+      if (user) {
+        bullet.id = uuid.v4();
+        bullet.t = Date.now();
+        bullet.owner = user;
+        state.bullets.push(bullet);
+      }
+      // client.broadcast.emit('sync', state);
     });
 
     client.on('disconnect', () => {
@@ -53,7 +58,7 @@ function multiplayer (io) {
     });
   });
 
-  // start the loop at 30 fps (1000/30ms per frame)
+  // start the loop
   gameloop.setGameLoop(delta => {
     const now = Date.now();
 
@@ -61,10 +66,25 @@ function multiplayer (io) {
 
     const speed = BULLET_SPEED * delta;
 
-    for (let bullet of state.bullets) {
-      bullet.x += speed * Math.cos(bullet.rotation);
-      bullet.y += speed * Math.sin(bullet.rotation);
+    for (let b of state.bullets) {
+      b.x += speed * Math.cos(b.rotation);
+      b.y += speed * Math.sin(b.rotation);
+
+      // detect collisions
+      for (let u of state.users) {
+        if (u.id === b.owner.id) {
+          continue;
+        }
+        if (b.x < u.x + SPRITE_SIZE && b.x + SPRITE_SIZE > u.x
+          && b.y < u.y + SPRITE_SIZE && SPRITE_SIZE + b.y > u.y) {
+          u.health -= 1;
+          b.dead = true;
+        }
+      }
     }
+
+    // clean dead bullets
+    state.bullets = state.bullets.filter(b => !b.dead);
 
     io.emit('sync', state);
   }, REFRESH_RATE);

@@ -124,12 +124,9 @@ function runGame (elementId, user) {
       let bullet = weapon.fire();
       if (bullet) {
         let data = {
-          bullet: {
-            x: bullet.x,
-            y: bullet.y,
-            rotation: bullet.rotation
-          },
-          owner: user
+          x: bullet.x,
+          y: bullet.y,
+          rotation: bullet.rotation
         };
         socket.emit('shoot', data);
       }
