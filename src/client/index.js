@@ -7,11 +7,6 @@ userInteracions.onPlay(username => {
 
   socket.on('user', user => {
     console.log('render as user', user);
+    runGame('game', user);
   });
-
-  socket.on('enemy', enemy => {
-    console.log('render as enemy', enemy);
-  });
-
-  runGame('game');
 });

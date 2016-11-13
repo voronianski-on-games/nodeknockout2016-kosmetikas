@@ -1,10 +1,11 @@
 const socket = require('./socket');
 
-function runGame (elementId) {
-  const game = new Phaser.Game('100%', '100%', Phaser.CANVAS, elementId, { preload, create, update });
+function runGame (elementId, user) {
+  const game = new Phaser.Game('100%', '100%', Phaser.CANVAS, elementId, { create, update, preload });
 
   let player;
   let weapon;
+  let enemies = [];
   let cursors;
   let fireButton;
 
@@ -48,6 +49,7 @@ function runGame (elementId) {
 
   function create() {
     game.world.setBounds(-1000, -1000, 2000, 2000);
+    game.add.text(0, 0, 'PREPARE\nFOR BATTLE', { font: '32px Arial', fill: '#5ce6cd', align: 'center' });
 
     createShipGraphics('user');
     createShipGraphics('enemy');
@@ -69,7 +71,7 @@ function runGame (elementId) {
     //  Wrap bullets around the world bounds to the opposite side
     weapon.bulletWorldWrap = true;
 
-    player = game.add.sprite(200, 150, game.cache.getBitmapData('userShip'));
+    player = game.add.sprite(user.x, user.y, game.cache.getBitmapData('userShip'));
 
     // follow player
     game.camera.follow(player, Phaser.Camera.FOLLOW_LOCKON);
@@ -94,6 +96,7 @@ function runGame (elementId) {
   }
 
   function update() {
+
     if (cursors.up.isDown) {
       game.physics.arcade.accelerationFromRotation(player.rotation, 300, player.body.acceleration);
     } else {
@@ -113,9 +116,37 @@ function runGame (elementId) {
     if (fireButton.isDown) {
       weapon.fire();
     }
+
+    game.world.wrap(player, 16);
+
+    user.x = player.x;
+    user.y = player.y;
+
+    socket.emit('sync', user);
   }
 
+  // multiplayer
+
+  socket.on('sync', users => {
+    console.log('GAME: sync', users);
+    for (let u of users) {
+      if (u.id !== user.id) { // don't update users location
+        let enemy = enemies.find(e => e.id === u.id);
+        if (!enemy) {
+          // new enemy appered - render him
+          enemy = game.add.sprite(u.x, u.y, game.cache.getBitmapData('enemyShip'));
+          enemy.id = u.id;
+          enemies.push(enemy);
+        } else {
+          // change position of the existing one
+          enemy.x = u.x;
+          enemy.y = u.y;
+        }
+      }
+    }
+  });
+
   return game;
-};
+}
 
 module.exports = runGame;
