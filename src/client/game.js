@@ -46,6 +46,28 @@ function runGame (elementId, user) {
     game.cache.addBitmapData('bullet', bulletBMD);
   }
 
+  function createPlayer(user) {
+    const player = game.add.sprite(user.x, user.y, game.cache.getBitmapData('userShip'));
+
+    // follow player
+    game.camera.follow(player, Phaser.Camera.FOLLOW_LOCKON);
+
+    player.anchor.set(0.5);
+
+    game.physics.arcade.enable(player);
+
+    player.body.drag.set(70);
+    player.body.maxVelocity.set(200);
+    player.body.collideWorldBounds = true;
+    player.body.bounce.setTo(0.9, 0.9);
+
+    //  Tell the Weapon to track the 'player' Sprite
+    //  With small offset from the position
+    //  'true' argument tells the weapon to track player rotation
+    weapon.trackSprite(player, 8, 0, true);
+    return player;
+  }
+
   function preload () {
     // fullscreen and resizable
     game.load.image('starfield', '/assets/stars-bg.png');
@@ -81,24 +103,7 @@ function runGame (elementId, user) {
     //  Wrap bullets around the world bounds to the opposite side
     // weapon.bulletWorldWrap = true;
 
-    player = game.add.sprite(user.x, user.y, game.cache.getBitmapData('userShip'));
-
-    // follow player
-    game.camera.follow(player, Phaser.Camera.FOLLOW_LOCKON);
-
-    player.anchor.set(0.5);
-
-    game.physics.arcade.enable(player);
-
-    player.body.drag.set(70);
-    player.body.maxVelocity.set(200);
-    player.body.collideWorldBounds = true;
-    player.body.bounce.setTo(0.9, 0.9);
-
-    //  Tell the Weapon to track the 'player' Sprite
-    //  With small offset from the position
-    //  'true' argument tells the weapon to track player rotation
-    weapon.trackSprite(player, 8, 0, true);
+    player = createPlayer(user);
 
     // Controls setup
     cursors = game.input.keyboard.createCursorKeys();
@@ -122,33 +127,40 @@ function runGame (elementId, user) {
         starfield.tilePosition.y += 1;
       }
     }
-
-    if (cursors.up.isDown) {
-      game.physics.arcade.accelerationFromRotation(player.rotation, 300, player.body.acceleration);
-    } else if (cursors.down.isDown) {
-      game.physics.arcade.accelerationFromRotation(player.rotation, -150, player.body.acceleration);
-    } else {
-      player.body.acceleration.set(0);
-    }
-
-    if (cursors.left.isDown) {
-      player.body.angularVelocity = -300;
-    } else if (cursors.right.isDown) {
-      player.body.angularVelocity = 300;
-    } else {
-      player.body.angularVelocity = 0;
-    }
-
-    if (fireButton.isDown) {
-      let bullet = weapon.fire();
-      if (bullet) {
-        let data = {
-          x: bullet.x,
-          y: bullet.y,
-          rotation: bullet.rotation
-        };
-        socket.emit('shoot', data);
+    if (player) {
+      if (cursors.up.isDown) {
+        game.physics.arcade.accelerationFromRotation(player.rotation, 300, player.body.acceleration);
+      } else if (cursors.down.isDown) {
+        game.physics.arcade.accelerationFromRotation(player.rotation, -150, player.body.acceleration);
+      } else {
+        player.body.acceleration.set(0);
       }
+
+      if (cursors.left.isDown) {
+        player.body.angularVelocity = -300;
+      } else if (cursors.right.isDown) {
+        player.body.angularVelocity = 300;
+      } else {
+        player.body.angularVelocity = 0;
+      }
+
+      if (fireButton.isDown) {
+        let bullet = weapon.fire();
+        if (bullet) {
+          let data = {
+            x: bullet.x,
+            y: bullet.y,
+            rotation: bullet.rotation
+          };
+          socket.emit('shoot', data);
+        }
+      }
+
+      user.x = player.x;
+      user.y = player.y;
+      user.rotation = player.rotation;
+
+      socket.emit('sync', user);
     }
 
     for (let u of state.users) {
@@ -194,12 +206,6 @@ function runGame (elementId, user) {
         bullet.y = b.y;
       }
     }
-
-    user.x = player.x;
-    user.y = player.y;
-    user.rotation = player.rotation;
-
-    socket.emit('sync', user);
   }
 
   // multiplayer events
@@ -207,12 +213,34 @@ function runGame (elementId, user) {
     state = st;
   });
 
-  socket.on('left-game', user => {
-    const enemyIndex = enemies.findIndex(e => e.id === user.id);
+  socket.on('left-game', u => {
+    const enemyIndex = enemies.findIndex(e => e.id === u.id);
 
     if (enemyIndex > -1) {
       enemies[enemyIndex].destroy();
       enemies.splice(enemyIndex, 1);
+    }
+  });
+
+  socket.on('death', u => {
+    if (u.id === user.id) {
+      // player died
+      player.destroy();
+      player = null;
+    } else {
+      // enemy died
+      const enemyIndex = enemies.findIndex(e => e.id === u.id);
+
+      if (enemyIndex > -1) {
+        enemies[enemyIndex].destroy();
+        enemies.splice(enemyIndex, 1);
+      }
+    }
+  });
+
+  socket.on('respawn', u => {
+    if (u.id === user.id) {
+      player = createPlayer(u);
     }
   });
 

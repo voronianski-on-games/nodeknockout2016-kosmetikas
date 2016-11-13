@@ -4,7 +4,8 @@ const gameloop = require('node-gameloop');
 const BULLET_LIFETIME = 2500;
 const BULLET_SPEED = 400;
 const REFRESH_RATE = 1000 / 30; // 30 fps (1000/30ms per frame)
-const SPRITE_SIZE = 32;
+const SPRITE_SIZE = 16;
+const RESPAWN_TIME = 3000;
 
 const state = {
   users: [],
@@ -66,6 +67,16 @@ function multiplayer (io) {
     // clean dead bullets
     state.bullets = state.bullets.filter(b => !b.dead && (b.t + BULLET_LIFETIME*2 > now));
 
+    // respwn dead users
+    const deadUsers = state.users.filter(u => !u.dead);
+    for (let du of deadUsers) {
+      if (du.deathTime + RESPAWN_TIME < now) {
+        du.dead = false;
+        du.health = 3;
+        io.emit('respawn', du);
+      }
+    }
+
     for (let b of state.bullets) {
       b.x += speed * Math.cos(b.rotation);
       b.y += speed * Math.sin(b.rotation);
@@ -80,6 +91,11 @@ function multiplayer (io) {
           u.health -= 1;
           b.dead = true;
           io.emit('collision', {bullet: b, user: u}); // not used
+        }
+        if (!u.dead && u.health <= 0) {
+          u.dead = true;
+          u.deathTime = now;
+          io.emit('death', u);
         }
       }
 
