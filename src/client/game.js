@@ -189,15 +189,22 @@ function runGame (elementId, user, onDestroy) {
 
         if (!enemy) {
           // new enemy appeared - render him
-          enemy = game.add.sprite(u.x, u.y, game.cache.getBitmapData('enemyShip'));
-          enemy.anchor.set(0.5);
+          enemy = game.add.group();
+          enemy.x = u.x;
+          enemy.y = u.y;
+          let enemySprite = game.add.sprite(0, 0, game.cache.getBitmapData('enemyShip'));
+          enemySprite.anchor.set(0.5);
+          enemy.add(enemySprite);
+          let text = game.add.text(0, 18, u.username, { font: '10px consolas', fill: '#fff', align: 'center' });
+          enemy.add(text);
+
           enemy.id = u.id;
           enemies.push(enemy);
         } else {
           // change position of the existing one
           enemy.x = u.x;
           enemy.y = u.y;
-          enemy.rotation = u.rotation;
+          enemy.children[0].rotation = u.rotation;
         }
       } else if (u.id === user.id) {
         if (health.length !== u.health) {
