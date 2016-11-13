@@ -80,6 +80,8 @@ function runGame (elementId) {
 
     player.body.drag.set(70);
     player.body.maxVelocity.set(200);
+    player.body.collideWorldBounds = true;
+    player.body.bounce.setTo(0.9, 0.9);
 
     //  Tell the Weapon to track the 'player' Sprite
     //  With small offset from the position
@@ -111,8 +113,6 @@ function runGame (elementId) {
     if (fireButton.isDown) {
       weapon.fire();
     }
-
-    game.world.wrap(player, 16);
   }
 
   return game;
