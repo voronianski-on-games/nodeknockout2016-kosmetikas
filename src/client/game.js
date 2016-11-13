@@ -41,8 +41,7 @@ function runGame (elementId, user) {
 
     bulletBMD.context.strokeStyle ='white';
     bulletBMD.context.fillStyle ='white';
-    bulletBMD.context.fillRect(0, 6, 32, 2);
-    bulletBMD.context.fillRect(0, 24, 32, 2);
+    bulletBMD.context.fillRect(10, 15, 32, 2);
 
     game.cache.addBitmapData('bullet', bulletBMD);
   }
@@ -158,7 +157,7 @@ function runGame (elementId, user) {
         let enemy = enemies.find(e => e.id === u.id);
 
         if (!enemy) {
-          // new enemy appered - render him
+          // new enemy appeared - render him
           enemy = game.add.sprite(u.x, u.y, game.cache.getBitmapData('enemyShip'));
           enemy.anchor.set(0.5);
           enemy.id = u.id;
