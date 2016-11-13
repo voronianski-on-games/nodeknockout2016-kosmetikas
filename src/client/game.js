@@ -123,9 +123,6 @@ function runGame (elementId, user) {
     user.y = player.y;
     user.rotation = player.rotation;
 
-    console.log('rotation', player.rotation);
-
-
     socket.emit('sync', user);
   }
 
@@ -139,6 +136,7 @@ function runGame (elementId, user) {
         if (!enemy) {
           // new enemy appered - render him
           enemy = game.add.sprite(u.x, u.y, game.cache.getBitmapData('enemyShip'));
+          enemy.anchor.set(0.5);
           enemy.id = u.id;
           enemies.push(enemy);
         } else {
