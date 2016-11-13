@@ -9,6 +9,7 @@ const $intro = document.getElementById('intro');
 const $noSound = document.getElementById('noSound');
 const $playForm = document.getElementById('playForm');
 const $username = document.getElementById('username');
+const $hint = document.getElementById('hint');
 
 // audio
 const audio = document.createElement('audio');
@@ -50,7 +51,13 @@ $playForm.onsubmit = e => {
   $intro.classList.add('turn-off');
   setTimeout(() => {
     $intro.style.display = 'none';
+    $hint.style.display = 'block';
+
     onPlayCallback(username);
+
+    setTimeout(() => {
+      $hint.classList.add('fadeOutDown');
+    }, 3000);
   }, 500);
 };
 

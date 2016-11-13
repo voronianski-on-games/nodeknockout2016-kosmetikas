@@ -1,7 +1,7 @@
 const socket = require('./socket');
 
 function runGame (elementId) {
-  const game = new Phaser.Game('100%', '100%', Phaser.CANVAS, elementId, { create, update });
+  const game = new Phaser.Game('100%', '100%', Phaser.CANVAS, elementId, { preload, create, update });
 
   let player;
   let weapon;
