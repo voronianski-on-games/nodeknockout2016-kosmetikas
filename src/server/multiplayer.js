@@ -1,4 +1,5 @@
 const uuid = require('node-uuid');
+const gameloop = require('node-gameloop');
 
 const state = {
   users: [],
@@ -48,17 +49,19 @@ function multiplayer (io) {
     });
   });
 
-  // Game loop
-  setInterval(() => {
+  // start the loop at 30 fps (1000/30ms per frame)
+  gameloop.setGameLoop(delta => {
     const now = Date.now();
-    state.bullets = state.bullets.filter(b => b.t + 2500 >  now);
+
+    state.bullets = state.bullets.filter(b => b.t + 2500 > now);
+
     for (let bullet of state.bullets) {
       bullet.x += 10 * Math.cos(bullet.rotation);
       bullet.y += 10 * Math.sin(bullet.rotation);
     }
 
     io.emit('sync', state);
-  }, 30);
+  }, 1000 / 30);
 }
 
 module.exports = multiplayer;
