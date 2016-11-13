@@ -11,8 +11,10 @@ module.exports = function runGame (elementId) {
 
     // fullscreen and resizable
     this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+    this.scale.pageAlignHorizontally = true;
+    this.scale.pageAlignVertically = true;
 
-    //  Create our bitmapData which we'll use as a Sprite texture for the ship
+    // Create our bitmapData which we'll use as a Sprite texture for the ship
     let shipBMD = this.add.bitmapData(32, 32);
     shipBMD.context.strokeStyle = 'white';
     shipBMD.context.lineWidth = 2;
