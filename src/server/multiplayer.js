@@ -24,6 +24,7 @@ function multiplayer (io) {
       if (user) {
         user.x = data.x;
         user.y = data.y;
+        user.rotation = data.rotation;
         // console.log(state.users);
         client.broadcast.emit('sync', state.users);
       }

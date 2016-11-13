@@ -121,6 +121,10 @@ function runGame (elementId, user) {
 
     user.x = player.x;
     user.y = player.y;
+    user.rotation = player.rotation;
+
+    console.log('rotation', player.rotation);
+
 
     socket.emit('sync', user);
   }
@@ -128,7 +132,7 @@ function runGame (elementId, user) {
   // multiplayer
 
   socket.on('sync', users => {
-    console.log('GAME: sync', users);
+    // console.log('GAME: sync', users);
     for (let u of users) {
       if (u.id !== user.id) { // don't update users location
         let enemy = enemies.find(e => e.id === u.id);
@@ -141,6 +145,7 @@ function runGame (elementId, user) {
           // change position of the existing one
           enemy.x = u.x;
           enemy.y = u.y;
+          enemy.rotation = u.rotation;
         }
       }
     }
