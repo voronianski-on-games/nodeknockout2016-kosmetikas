@@ -19,11 +19,12 @@ app.use(express.static(path.join(__dirname, '../../public')));
 
 app.get('/', serveBase());
 
-io.on('connection', function(socket) {
-  console.log('a user connected');
-  socket.on('new-user', function(user) {
+io.on('connection', client => {
+  console.log('user connected');
+  client.on('join-game', user => {
     console.log(user);
-    io.emit('new-user', user);
+    client.emit('user', user);
+    client.broadcast.emit('rival', user);
   });
 });
 

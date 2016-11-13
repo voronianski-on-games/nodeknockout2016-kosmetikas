@@ -1,13 +1,17 @@
-const runGame = require('./game');
+const game = require('./game');
 const socket = require('./socket');
 const userInteracions = require('./ui');
 
 userInteracions.onPlay(function (username) {
-  socket.emit('new-user', { username });
-  socket.on('new-user', function (user) {
-    console.log(user);
+  socket.emit('join-game', { username });
+
+  socket.on('user', function (user) {
+    console.log('render as user', user);
   });
 
-  console.log('Run game');
-  runGame('game');
+  socket.on('rival', function (rival) {
+    console.log('render as rival', rival);
+  })
+
+  game('game');
 });

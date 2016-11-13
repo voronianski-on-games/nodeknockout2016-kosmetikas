@@ -1,7 +1,6 @@
 const socket = require('./socket');
 
-module.exports = function runGame(elementId) {
-
+module.exports = function runGame (elementId) {
   let player;
   let weapon;
   let cursors;
@@ -11,7 +10,7 @@ module.exports = function runGame(elementId) {
 
     this.world.setBounds(-1000, -1000, 2000, 2000);
 
-    this.add.text(0, 0, 'PREPARE\nFOR BATTLE', { font: '32px Arial', fill: '#5ce6cd', align: 'center' });
+    // this.add.text(0, 0, 'PREPARE\nFOR BATTLE', { font: '32px Arial', fill: '#5ce6cd', align: 'center' });
 
     //	Create our bitmapData which we'll use as a Sprite texture for the ship
     let shipBMD = this.add.bitmapData(32, 32);
