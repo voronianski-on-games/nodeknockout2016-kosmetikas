@@ -1,6 +1,7 @@
 const store = require('store');
 
 const cachedSound = store.get('soundEnabled');
+let gameStarted = false;
 let soundEnabled = typeof cachedSound !== 'boolean' ? true : cachedSound;
 let onPlayCallback = function noop () {};
 
@@ -44,7 +45,7 @@ $playForm.onsubmit = e => {
 
   if (soundEnabled) {
     audio.pause();
-    audio.src = gameAudio
+    audio.src = gameAudio;
     audio.play();
   }
 
@@ -54,6 +55,8 @@ $playForm.onsubmit = e => {
     $hint.style.display = 'block';
 
     onPlayCallback(username);
+
+    gameStarted = true;
 
     setTimeout(() => {
       $hint.classList.add('fadeOutDown');
@@ -70,6 +73,11 @@ $noSound.onclick = e => {
 
   if (soundEnabled) {
     $noSound.classList.remove('active');
+
+    if (gameStarted) {
+      audio.src = gameAudio
+    }
+
     audio.play();
   } else {
     $noSound.classList.add('active');
