@@ -61,10 +61,10 @@ function multiplayer (io) {
   // start the loop
   gameloop.setGameLoop(delta => {
     const now = Date.now();
-
-    state.bullets = state.bullets.filter(b => b.t + BULLET_LIFETIME > now);
-
     const speed = BULLET_SPEED * delta;
+
+    // clean dead bullets
+    state.bullets = state.bullets.filter(b => !b.dead && (b.t + BULLET_LIFETIME*2 > now));
 
     for (let b of state.bullets) {
       b.x += speed * Math.cos(b.rotation);
@@ -79,12 +79,14 @@ function multiplayer (io) {
           && b.y < u.y + SPRITE_SIZE && SPRITE_SIZE + b.y > u.y) {
           u.health -= 1;
           b.dead = true;
+          io.emit('collision', {bullet: b, user: u}); // not used
         }
       }
-    }
 
-    // clean dead bullets
-    state.bullets = state.bullets.filter(b => !b.dead);
+      if (b.t + BULLET_LIFETIME < now) {
+        b.dead = true;
+      }
+    }
 
     io.emit('sync', state);
   }, REFRESH_RATE);

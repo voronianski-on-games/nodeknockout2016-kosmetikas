@@ -152,6 +152,15 @@ function runGame (elementId, user) {
     }
 
     for (let b of state.bullets) {
+      if (b.dead) {
+        // remove dead bullets
+        const bulletIndex = bullets.findIndex(bs => bs.id === b.id);
+        if (bulletIndex > -1) {
+          bullets[bulletIndex].destroy();
+          bullets.splice(bulletIndex, 1);
+        }
+        continue;
+      }
       let bullet = bullets.find(bu => bu.id === b.id);
       if (!bullet) {
         // new bullet appered - render it
@@ -180,13 +189,7 @@ function runGame (elementId, user) {
   });
 
   socket.on('left-game', user => {
-    const { users } = state;
-    const userIndex = users.findIndex(u => u.id === user.id);
-    const enemyIndex = enemies.findIndex(e => e.id === user.id)
-
-    if (userIndex > -1) {
-      users.splice(userIndex, 1);
-    }
+    const enemyIndex = enemies.findIndex(e => e.id === user.id);
 
     if (enemyIndex > -1) {
       enemies[enemyIndex].destroy();
