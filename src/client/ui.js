@@ -11,6 +11,7 @@ const $noSound = document.getElementById('noSound');
 const $playForm = document.getElementById('playForm');
 const $username = document.getElementById('username');
 const $hint = document.getElementById('hint');
+const $game = document.getElementById('game');
 
 // audio
 const audio = document.createElement('audio');
@@ -85,4 +86,8 @@ $noSound.onclick = e => {
 
 exports.onPlay = callback => {
   onPlayCallback = callback;
+};
+exports.glitch = () => {
+  $game.classList.add('glitch');
+  setTimeout(() => $game.classList.remove('glitch'), 3000);
 };

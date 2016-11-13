@@ -1,6 +1,6 @@
 const socket = require('./socket');
 
-function runGame (elementId, user) {
+function runGame (elementId, user, onDestroy) {
   const game = new Phaser.Game('100%', '100%', Phaser.CANVAS, elementId, { create, update, preload }, true);
   let state = {
     users: [],
@@ -228,9 +228,11 @@ function runGame (elementId, user) {
       // player died
       player.destroy();
       player = null;
+      onDestroy && onDestroy();
     } else {
       // enemy died
       const enemyIndex = enemies.findIndex(e => e.id === u.id);
+
       if (enemyIndex > -1) {
         enemies[enemyIndex].destroy();
         enemies.splice(enemyIndex, 1);

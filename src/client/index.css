@@ -74,7 +74,7 @@ body {
   background-size: 100% 2px, 3px 100%;
   pointer-events: none;
   animation: turn-on 5s linear;
-  animation-fill-mode:forwards;
+  animation-fill-mode: forwards;
 }
 
 .no-sound-btn {
@@ -182,6 +182,10 @@ body {
 
 #game canvas {
   margin: 0 auto;
+}
+.glitch {
+  animation: turn-on 3s linear;
+  animation-fill-mode: forwards;
 }
 
 :root {
