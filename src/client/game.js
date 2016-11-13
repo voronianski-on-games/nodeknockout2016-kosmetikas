@@ -165,7 +165,7 @@ function runGame (elementId, user) {
     }
 
     for (let u of state.users) {
-      if (u.id !== user.id) { // don't update users location
+      if (u.id !== user.id && !u.dead) { // don't update users location and dead enemies
         let enemy = enemies.find(e => e.id === u.id);
 
         if (!enemy) {
@@ -231,7 +231,6 @@ function runGame (elementId, user) {
     } else {
       // enemy died
       const enemyIndex = enemies.findIndex(e => e.id === u.id);
-
       if (enemyIndex > -1) {
         enemies[enemyIndex].destroy();
         enemies.splice(enemyIndex, 1);
