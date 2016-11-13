@@ -15,10 +15,11 @@ function runGame (elementId, user) {
   function createShipGraphics (type) {
     // Create our bitmapData which we'll use as a Sprite texture for the ship
     const shipBMD = game.add.bitmapData(32, 32);
+    const isEnemy = (type === 'enemy');
 
     shipBMD.context.strokeStyle = 'white';
     shipBMD.context.lineWidth = 2;
-    shipBMD.context.fillStyle = type === 'enemy' ? 'green' : 'black';
+    shipBMD.context.fillStyle = type === 'enemy' ? '#FC5130' : 'black';
     shipBMD.context.beginPath();
     shipBMD.context.moveTo(0, 4);
     shipBMD.context.lineTo(32, 16);
