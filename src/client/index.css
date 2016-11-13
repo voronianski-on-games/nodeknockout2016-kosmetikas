@@ -182,10 +182,6 @@ body {
 
 #game canvas {
   margin: 0 auto;
-  /*position: absolute;*/
-  /*top: 0;*/
-  /*border: 1px solid #fff;*/
-  /*z-index: 1;*/
 }
 
 :root {

@@ -31,7 +31,8 @@
             "transform-object-assign"
           ]
         }
-      ]
+      ],
+      ["envify"]
     ]
   },
   "dependencies": {
@@ -46,6 +47,7 @@
     "compression": "^1.6.2",
     "contrabass.css": "^1.0.4",
     "cssnano-cli": "^1.0.5",
+    "envify": "^3.4.1",
     "express": "^4.13.3",
     "griddy.css": "^1.0.1",
     "morgan": "^1.7.0",

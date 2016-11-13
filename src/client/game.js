@@ -1,7 +1,7 @@
 const socket = require('./socket');
 
 function runGame (elementId, user) {
-  const game = new Phaser.Game('100%', '100%', Phaser.CANVAS, elementId, { create, update, preload });
+  const game = new Phaser.Game('100%', '100%', Phaser.CANVAS, elementId, { create, update, preload }, true);
   let state = {
     users: [],
     bullets: []
@@ -13,6 +13,7 @@ function runGame (elementId, user) {
   let bullets = [];
   let cursors;
   let fireButton;
+  let starfield;
 
   function createShipGraphics (type) {
     // Create our bitmapData which we'll use as a Sprite texture for the ship
@@ -48,15 +49,19 @@ function runGame (elementId, user) {
 
   function preload () {
     // fullscreen and resizable
+    game.load.image('starfield', '/assets/stars-bg.png');
     game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
     game.scale.pageAlignHorizontally = true;
     game.scale.pageAlignVertically = true;
   }
 
   function create() {
-    game.stage.disableVisibilityChange = true; // TODO: remove in prod
+    if (process.env.NODE_ENV !== 'production') {
+      game.stage.disableVisibilityChange = true;
+    }
+
     game.world.setBounds(-1000, -1000, 2000, 2000);
-    game.add.text(0, 0, 'PREPARE\nFOR BATTLE', { font: '32px Arial', fill: '#5ce6cd', align: 'center' });
+    starfield = game.add.tileSprite(-1000, -1000, 2000, 2000, 'starfield');
 
     createShipGraphics('user');
     createShipGraphics('enemy');
@@ -103,6 +108,22 @@ function runGame (elementId, user) {
   }
 
   function update() {
+    if (cursors.up.isDown) {
+      const r = Math.floor(player.rotation);
+
+      if (r === 2) {
+        starfield.tilePosition.x -= 1;
+      }
+      if (r === -1) {
+        starfield.tilePosition.x += 1;
+      }
+      if (r === 1) {
+        starfield.tilePosition.y -= 1;
+      }
+      if (r === -2) {
+        starfield.tilePosition.y += 1;
+      }
+    }
 
     if (cursors.up.isDown) {
       game.physics.arcade.accelerationFromRotation(player.rotation, 300, player.body.acceleration);
