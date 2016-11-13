@@ -23,14 +23,20 @@
       <h1 class="h1 caps mb1 relative title">Asteroids on Steroids</h1>
       <p class="h5 mt1 mb2 caps">Multiplayer space battle adventure</p>
 
-      <form id="playForm" class="mt3 pt1 animated">
+      <form id="playForm" class="mt3 pt1 animated" autocomplete="off">
         <input type="text" id="username" class="username field caps ultra-rounded mr1" placeholder="Your username" maxlength="254" />
         <button type="submit" class="play-btn button caps ultra-rounded">Play</button>
       </form>
     </div>
   </div>
 
+  <button id="noSound" class="no-sound-btn button rounded"></button>
+
   <div id="game" class="mx-auto"></div>
+
+  <a href="https://www.nodeknockout.com" class="inline-block ko-button animated fadeIn" target="_blank"><img src="./assets/nko-logo.png" height="20" /></a>
+  <a href="https://www.nodeknockout.com/entries/47-kosmetika" class="inline-block vote-button animated fadeIn tada"><img src="./assets/voteko.png" height="39" /></a>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.6.2/phaser.min.js" type="text/javascript"></script>
   <script src="{{mainJS}}" type="text/javascript" async defer></script>
 </body>
