@@ -14,6 +14,7 @@ function runGame (elementId, user, onDestroy) {
   let cursors;
   let fireButton;
   let starfield;
+  let health;
 
   function createShipGraphics (type) {
     // Create our bitmapData which we'll use as a Sprite texture for the ship
@@ -46,6 +47,15 @@ function runGame (elementId, user, onDestroy) {
     game.cache.addBitmapData('bullet', bulletBMD);
   }
 
+  function setHealth(n) {
+    health.removeAll();
+    for (let i=0; i<n; i++) {
+      let hSprite = health.create(70 + i*35, 38, game.cache.getBitmapData('userShip'));
+      hSprite.angle=-90;
+      hSprite.scale.setTo(0.75, 0.75);
+    }
+  }
+
   function createPlayer(user) {
     const player = game.add.sprite(user.x, user.y, game.cache.getBitmapData('userShip'));
 
@@ -65,6 +75,9 @@ function runGame (elementId, user, onDestroy) {
     //  With small offset from the position
     //  'true' argument tells the weapon to track player rotation
     weapon.trackSprite(player, 8, 0, true);
+
+    setHealth(user.health);
+
     return player;
   }
 
@@ -77,15 +90,15 @@ function runGame (elementId, user, onDestroy) {
 
     game.stage.disableVisibilityChange = true;
     game.raf = new Phaser.RequestAnimationFrame(game, true);
+
+    createShipGraphics('user');
+    createShipGraphics('enemy');
+    createBulletGraphics();
   }
 
   function create() {
     game.world.setBounds(-1000, -1000, 2000, 2000);
     starfield = game.add.tileSprite(-1000, -1000, 2000, 2000, 'starfield');
-
-    createShipGraphics('user');
-    createShipGraphics('enemy');
-    createBulletGraphics();
 
     // Creates 30 bullets, using the 'bullet' graphic
     weapon = game.add.weapon(30, game.cache.getBitmapData('bullet'));
@@ -102,6 +115,11 @@ function runGame (elementId, user, onDestroy) {
 
     //  Wrap bullets around the world bounds to the opposite side
     // weapon.bulletWorldWrap = true;
+
+    // create "healthbar"
+    health = game.add.group();
+    health.fixedToCamera = true;
+    health.cameraOffset = new Phaser.Point(0, 0);
 
     player = createPlayer(user);
 
@@ -179,6 +197,10 @@ function runGame (elementId, user, onDestroy) {
           enemy.x = u.x;
           enemy.y = u.y;
           enemy.rotation = u.rotation;
+        }
+      } else if (u.id === user.id) {
+        if (health.length !== u.health) {
+          setHealth(u.health);
         }
       }
     }
