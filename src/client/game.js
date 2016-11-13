@@ -195,7 +195,7 @@ function runGame (elementId, user, onDestroy) {
           let enemySprite = game.add.sprite(0, 0, game.cache.getBitmapData('enemyShip'));
           enemySprite.anchor.set(0.5);
           enemy.add(enemySprite);
-          let text = game.add.text(0, 18, u.username, { font: '10px consolas', fill: '#fff', align: 'center' });
+          let text = game.add.text(0, 18, u.username, { font: '11px Roboto, Helvetica, sans-serif', fill: '#fff', align: 'center', fontWeight: '300' });
           enemy.add(text);
 
           enemy.id = u.id;
