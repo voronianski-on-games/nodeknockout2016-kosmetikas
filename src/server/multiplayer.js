@@ -19,8 +19,8 @@ function multiplayer (io) {
     client.on('join-game', data => {
       user = Object.assign({id: uuid.v4()}, data);
 
-      user.x = Math.random() * 100;
-      user.y = Math.random() * 100;
+      user.x = Math.random() * 1500 - 750;
+      user.y = Math.random() * 1500 - 750;
       user.health = 3;
 
       state.users.push(user);
@@ -71,6 +71,8 @@ function multiplayer (io) {
       if (du.deathTime + RESPAWN_TIME < now) {
         du.dead = false;
         du.health = 3;
+        du.x = Math.random() * 1500 - 750;
+        du.y = Math.random() * 1500 - 750;
         io.emit('respawn', du);
       }
     }
