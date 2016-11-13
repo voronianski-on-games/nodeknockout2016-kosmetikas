@@ -15,7 +15,13 @@ const $hint = document.getElementById('hint');
 // audio
 const audio = document.createElement('audio');
 const introAudio = './assets/adropday-the_cougar.mp3';
-const gameAudio = './assets/adropday-hotline_ berlin.mp3';
+const gameAudios = [
+  './assets/adropday-hotline_berlin.mp3',
+  './assets/adropday-80s_all_over_again.mp3',
+  './assets/uoki-toki-king_of_my_castle.mp3'
+];
+const randomGameAudioIndex = Math.floor(Math.random() * gameAudios.length);
+const gameAudio = gameAudios[randomGameAudioIndex];
 
 audio.src = introAudio;
 if (soundEnabled) {
@@ -43,11 +49,9 @@ $playForm.onsubmit = e => {
     return;
   }
 
-  if (soundEnabled) {
-    audio.pause();
-    audio.src = gameAudio;
-    audio.play();
-  }
+  soundEnabled && audio.pause();
+  audio.src = gameAudio;
+  soundEnabled && audio.play();
 
   $intro.classList.add('turn-off');
   setTimeout(() => {
@@ -55,8 +59,6 @@ $playForm.onsubmit = e => {
     $hint.style.display = 'block';
 
     onPlayCallback(username);
-
-    gameStarted = true;
 
     setTimeout(() => {
       $hint.classList.add('fadeOutDown');
@@ -73,10 +75,6 @@ $noSound.onclick = e => {
 
   if (soundEnabled) {
     $noSound.classList.remove('active');
-
-    if (gameStarted) {
-      audio.src = gameAudio
-    }
 
     audio.play();
   } else {
