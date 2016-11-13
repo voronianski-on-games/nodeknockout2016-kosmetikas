@@ -67,13 +67,14 @@ function multiplayer (io) {
     // clean dead bullets
     state.bullets = state.bullets.filter(b => !b.dead && (b.t + BULLET_LIFETIME*2 > now));
 
-    // respwn dead users
-    const deadUsers = state.users.filter(u => !u.dead);
+    // respawn dead users
+    const deadUsers = state.users.filter(u => u.dead);
     for (let du of deadUsers) {
       if (du.deathTime + RESPAWN_TIME < now) {
         du.dead = false;
         du.health = 3;
         io.emit('respawn', du);
+        console.log('respawn', du);
       }
     }
 
@@ -83,7 +84,7 @@ function multiplayer (io) {
 
       // detect collisions
       for (let u of state.users) {
-        if (u.id === b.owner.id) {
+        if (u.id === b.owner.id || u.dead) {
           continue;
         }
         if (b.x < u.x + SPRITE_SIZE && b.x + SPRITE_SIZE > u.x
