@@ -130,25 +130,24 @@ function runGame (elementId, user, onDestroy) {
   }
 
   function update() {
-    if (cursors.up.isDown) {
-      const r = Math.floor(player.rotation);
-
-      if (r === 2) {
-        starfield.tilePosition.x -= 1;
-      }
-      if (r === -1) {
-        starfield.tilePosition.x += 1;
-      }
-      if (r === 1) {
-        starfield.tilePosition.y -= 1;
-      }
-      if (r === -2) {
-        starfield.tilePosition.y += 1;
-      }
-    }
-
     if (player) {
       if (cursors.up.isDown) {
+        // move background
+        const r = Math.floor(player.rotation);
+
+        if (r === 2) {
+          starfield.tilePosition.x -= 1;
+        }
+        if (r === -1) {
+          starfield.tilePosition.x += 1;
+        }
+        if (r === 1) {
+          starfield.tilePosition.y -= 1;
+        }
+        if (r === -2) {
+          starfield.tilePosition.y += 1;
+        }
+
         game.physics.arcade.accelerationFromRotation(player.rotation, 300, player.body.acceleration);
       } else if (cursors.down.isDown) {
         game.physics.arcade.accelerationFromRotation(player.rotation, -150, player.body.acceleration);
