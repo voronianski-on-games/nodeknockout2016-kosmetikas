@@ -1,3 +1,5 @@
+require('babel-polyfill');
+
 const runGame = require('./game');
 const socket = require('./socket');
 const userInteracions = require('./ui');

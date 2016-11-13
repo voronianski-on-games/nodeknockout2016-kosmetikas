@@ -38,7 +38,7 @@ function multiplayer (io) {
       client.broadcast.emit('sync', state);
     });
 
-    client.on('disconnect', function() {
+    client.on('disconnect', () => {
       if (user) {
         state.users = state.users.filter(u => u.id !== user.id);
         console.log(user.username, 'left');
@@ -49,15 +49,14 @@ function multiplayer (io) {
   });
 
   // Game loop
-  setInterval(function() {
+  setInterval(() => {
     for (let bullet of state.bullets) {
       bullet.x += 10 * Math.cos(bullet.rotation);
       bullet.y += 10 * Math.sin(bullet.rotation);
     }
+
     io.emit('sync', state);
   }, 30);
 }
-
-
 
 module.exports = multiplayer;

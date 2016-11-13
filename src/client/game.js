@@ -135,11 +135,10 @@ function runGame (elementId, user) {
       }
     }
 
-    // game.world.wrap(player, 16);
-
     for (let u of state.users) {
       if (u.id !== user.id) { // don't update users location
         let enemy = enemies.find(e => e.id === u.id);
+
         if (!enemy) {
           // new enemy appered - render him
           enemy = game.add.sprite(u.x, u.y, game.cache.getBitmapData('enemyShip'));
@@ -178,10 +177,24 @@ function runGame (elementId, user) {
     socket.emit('sync', user);
   }
 
-  // multiplayer
-
+  // multiplayer events
   socket.on('sync', st => {
     state = st;
+  });
+
+  socket.on('left-game', user => {
+    const { users } = state;
+    const userIndex = users.findIndex(u => u.id === user.id);
+    const enemyIndex = enemies.findIndex(e => e.id === user.id)
+
+    if (userIndex > -1) {
+      users.splice(userIndex, 1);
+    }
+
+    if (enemyIndex > -1) {
+      enemies[enemyIndex].destroy();
+      enemies.splice(enemyIndex, 1);
+    }
   });
 
   return game;
