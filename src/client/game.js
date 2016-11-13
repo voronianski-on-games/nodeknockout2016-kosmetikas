@@ -14,7 +14,7 @@ function runGame (elementId) {
 
     shipBMD.context.strokeStyle = 'white';
     shipBMD.context.lineWidth = 2;
-    shipBMD.context.fillStyle = type === 'rival' ? 'green' : 'black';
+    shipBMD.context.fillStyle = type === 'enemy' ? 'green' : 'black';
     shipBMD.context.beginPath();
     shipBMD.context.moveTo(0, 4);
     shipBMD.context.lineTo(32, 16);
@@ -44,14 +44,14 @@ function runGame (elementId) {
     game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
     game.scale.pageAlignHorizontally = true;
     game.scale.pageAlignVertically = true;
+
+    createShipGraphics('user');
+    createShipGraphics('enemy');
+    createBulletGraphics();
   }
 
   function create() {
     game.world.setBounds(-1000, -1000, 2000, 2000);
-
-    createShipGraphics('user');
-    createShipGraphics('rival');
-    createBulletGraphics();
 
     // Creates 30 bullets, using the 'bullet' graphic
     weapon = game.add.weapon(30, game.cache.getBitmapData('bullet'));

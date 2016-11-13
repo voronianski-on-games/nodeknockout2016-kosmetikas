@@ -1,4 +1,4 @@
-const game = require('./game');
+const runGame = require('./game');
 const socket = require('./socket');
 const userInteracions = require('./ui');
 
@@ -9,11 +9,9 @@ userInteracions.onPlay(username => {
     console.log('render as user', user);
   });
 
-  socket.on('rival', rival => {
-    console.log('render as rival', rival);
+  socket.on('enemy', enemy => {
+    console.log('render as enemy', enemy);
   });
 
-  socket.on('sync')
-
-  game('game');
+  runGame('game');
 });

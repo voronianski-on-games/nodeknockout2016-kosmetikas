@@ -6,13 +6,13 @@ const state = {
 
 function multiplayer (io) {
   io.on('connection', client => {
-    client.on('join-game', user => {
-      const newUser = Object.assign({id: uuid.v4()}, user);
+    client.on('join-game', data => {
+      const user = Object.assign({id: uuid.v4()}, data);
 
-      state.users.push(newUser);
+      state.users.push(user);
 
-      client.emit('user', newUser);
-      client.broadcast.emit('rival', newUser);
+      client.emit('user', user);
+      client.broadcast.emit('enemy', user);
     });
   });
 }
