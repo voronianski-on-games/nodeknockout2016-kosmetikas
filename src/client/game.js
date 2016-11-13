@@ -19,7 +19,7 @@ function runGame (elementId, user) {
 
     shipBMD.context.strokeStyle = 'white';
     shipBMD.context.lineWidth = 2;
-    shipBMD.context.fillStyle = type === 'enemy' ? '#FC5130' : 'black';
+    shipBMD.context.fillStyle = isEnemy ? '#FC5130' : 'black';
     shipBMD.context.beginPath();
     shipBMD.context.moveTo(0, 4);
     shipBMD.context.lineTo(32, 16);
