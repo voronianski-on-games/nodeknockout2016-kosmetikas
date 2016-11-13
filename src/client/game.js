@@ -106,11 +106,11 @@ function runGame (elementId, user) {
 
     if (cursors.up.isDown) {
       game.physics.arcade.accelerationFromRotation(player.rotation, 300, player.body.acceleration);
+    } else if (cursors.down.isDown) {
+      game.physics.arcade.accelerationFromRotation(player.rotation, -150, player.body.acceleration);
     } else {
       player.body.acceleration.set(0);
     }
-
-    // TODO: pressing down to stop / fly in reverse?
 
     if (cursors.left.isDown) {
       player.body.angularVelocity = -300;
