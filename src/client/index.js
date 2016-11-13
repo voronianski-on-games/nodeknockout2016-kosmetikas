@@ -11,7 +11,9 @@ userInteracions.onPlay(function (username) {
 
   socket.on('rival', function (rival) {
     console.log('render as rival', rival);
-  })
+  });
+
+  socket.on('sync')
 
   game('game');
 });

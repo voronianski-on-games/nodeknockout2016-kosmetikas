@@ -5,6 +5,7 @@ let soundEnabled = typeof cachedSound !== 'boolean' ? true : cachedSound;
 let onPlayCallback = function noop () {};
 
 // elements
+const $intro = document.getElementById('intro');
 const $noSound = document.getElementById('noSound');
 const $playForm = document.getElementById('playForm');
 const $username = document.getElementById('username');
@@ -46,7 +47,11 @@ $playForm.onsubmit = function (e) {
     audio.play();
   }
 
-  onPlayCallback(username);
+  $intro.classList.add('turn-off');
+  setTimeout(function () {
+    $intro.style.display = 'none';
+    onPlayCallback(username);
+  }, 500);
 };
 
 // toggle audio

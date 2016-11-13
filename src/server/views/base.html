@@ -17,7 +17,8 @@
 </head>
 <body>
   <div class="tv-overlay"></div>
-  <div class="container mx-auto px2 mt3 mb4">
+
+  <div id="intro" class="container mx-auto px2 mt3 mb4">
     <div class="hero px3 py4 center animated {{randomFade}}">
       <img src="./assets/ship.gif" width="150" />
       <h1 class="h1 caps mb1 relative title">Asteroids on Steroids</h1>
@@ -30,10 +31,9 @@
     </div>
   </div>
 
-  <button id="noSound" class="no-sound-btn button rounded"></button>
-
   <div id="game" class="mx-auto"></div>
 
+  <button id="noSound" class="no-sound-btn button rounded animated fadeIn"></button>
   <a href="https://www.nodeknockout.com" class="inline-block ko-button animated fadeIn" target="_blank"><img src="./assets/nko-logo.png" height="20" /></a>
   <a href="https://www.nodeknockout.com/entries/47-kosmetika" class="inline-block vote-button animated fadeIn tada"><img src="./assets/voteko.png" height="39" /></a>
 

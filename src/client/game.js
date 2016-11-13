@@ -7,12 +7,12 @@ module.exports = function runGame (elementId) {
   let fireButton;
 
   function create() {
-
     this.world.setBounds(-1000, -1000, 2000, 2000);
 
-    // this.add.text(0, 0, 'PREPARE\nFOR BATTLE', { font: '32px Arial', fill: '#5ce6cd', align: 'center' });
+    // fullscreen and resizable
+    this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
 
-    //	Create our bitmapData which we'll use as a Sprite texture for the ship
+    //  Create our bitmapData which we'll use as a Sprite texture for the ship
     let shipBMD = this.add.bitmapData(32, 32);
     shipBMD.context.strokeStyle = 'white';
     shipBMD.context.lineWidth = 2;
@@ -25,9 +25,9 @@ module.exports = function runGame (elementId) {
     shipBMD.context.closePath();
     shipBMD.context.fill();
     shipBMD.context.stroke();
-    this.cache.addBitmapData('ship', shipBMD); //	Put the bitmapData into the cache
+    this.cache.addBitmapData('ship', shipBMD); // Put the bitmapData into the cache
 
-    //	Create our bitmapData which we'll use as a Sprite texture for the bullets
+    //  Create our bitmapData which we'll use as a Sprite texture for the bullets
     let bulletBMD = this.add.bitmapData(32, 32);
     bulletBMD.context.strokeStyle ='white';
     bulletBMD.context.fillStyle ='white';
@@ -75,7 +75,6 @@ module.exports = function runGame (elementId) {
   }
 
   function update() {
-
     if (cursors.up.isDown) {
       this.physics.arcade.accelerationFromRotation(player.rotation, 300, player.body.acceleration);
     } else {
@@ -99,5 +98,8 @@ module.exports = function runGame (elementId) {
     this.world.wrap(player, 16);
   }
 
-  return new Phaser.Game(800, 600, Phaser.CANVAS, elementId, { create, update });
+  return new Phaser.Game('100%', '100%', Phaser.CANVAS, elementId, {
+    create: create,
+    update: update
+  });
 };
