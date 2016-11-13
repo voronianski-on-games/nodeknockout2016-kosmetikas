@@ -44,14 +44,14 @@ function runGame (elementId) {
     game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
     game.scale.pageAlignHorizontally = true;
     game.scale.pageAlignVertically = true;
-
-    createShipGraphics('user');
-    createShipGraphics('enemy');
-    createBulletGraphics();
   }
 
   function create() {
     game.world.setBounds(-1000, -1000, 2000, 2000);
+
+    createShipGraphics('user');
+    createShipGraphics('enemy');
+    createBulletGraphics();
 
     // Creates 30 bullets, using the 'bullet' graphic
     weapon = game.add.weapon(30, game.cache.getBitmapData('bullet'));
