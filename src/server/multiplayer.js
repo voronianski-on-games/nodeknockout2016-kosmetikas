@@ -52,8 +52,6 @@ function multiplayer (io) {
     client.on('disconnect', () => {
       if (user) {
         state.users = state.users.filter(u => u.id !== user.id);
-        console.log(user.username, 'left');
-        console.log('Current users:', state.users);
         io.emit('left-game', user);
       }
     });
@@ -74,7 +72,6 @@ function multiplayer (io) {
         du.dead = false;
         du.health = 3;
         io.emit('respawn', du);
-        console.log('respawn', du);
       }
     }
 

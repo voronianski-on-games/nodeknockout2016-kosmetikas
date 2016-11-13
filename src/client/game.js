@@ -127,6 +127,7 @@ function runGame (elementId, user) {
         starfield.tilePosition.y += 1;
       }
     }
+
     if (player) {
       if (cursors.up.isDown) {
         game.physics.arcade.accelerationFromRotation(player.rotation, 300, player.body.acceleration);

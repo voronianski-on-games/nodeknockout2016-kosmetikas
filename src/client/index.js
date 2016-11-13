@@ -8,7 +8,6 @@ userInteracions.onPlay(username => {
   socket.emit('join-game', { username });
 
   socket.on('user', user => {
-    console.log('render as user', user);
     runGame('game', user);
   });
 });
