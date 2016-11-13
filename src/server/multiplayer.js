@@ -17,7 +17,7 @@ function multiplayer (io) {
       state.users.push(user);
 
       client.emit('user', user);
-      io.emit('sync', state.users);
+      io.emit('sync', state);
     });
 
     client.on('sync', data => {
@@ -26,7 +26,7 @@ function multiplayer (io) {
         user.y = data.y;
         user.rotation = data.rotation;
         // console.log(state.users);
-        client.broadcast.emit('sync', state.users);
+        client.broadcast.emit('sync', state);
       }
     });
 

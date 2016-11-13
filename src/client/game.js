@@ -2,6 +2,9 @@ const socket = require('./socket');
 
 function runGame (elementId, user) {
   const game = new Phaser.Game('100%', '100%', Phaser.CANVAS, elementId, { create, update, preload });
+  let state = {
+    users: []
+  };
 
   let player;
   let weapon;
@@ -48,6 +51,7 @@ function runGame (elementId, user) {
   }
 
   function create() {
+    game.stage.disableVisibilityChange = true; // TODO: remove in prod
     game.world.setBounds(-1000, -1000, 2000, 2000);
     game.add.text(0, 0, 'PREPARE\nFOR BATTLE', { font: '32px Arial', fill: '#5ce6cd', align: 'center' });
 
@@ -117,20 +121,9 @@ function runGame (elementId, user) {
       weapon.fire();
     }
 
-    game.world.wrap(player, 16);
+    // game.world.wrap(player, 16);
 
-    user.x = player.x;
-    user.y = player.y;
-    user.rotation = player.rotation;
-
-    socket.emit('sync', user);
-  }
-
-  // multiplayer
-
-  socket.on('sync', users => {
-    // console.log('GAME: sync', users);
-    for (let u of users) {
+    for (let u of state.users) {
       if (u.id !== user.id) { // don't update users location
         let enemy = enemies.find(e => e.id === u.id);
         if (!enemy) {
@@ -147,6 +140,18 @@ function runGame (elementId, user) {
         }
       }
     }
+
+    user.x = player.x;
+    user.y = player.y;
+    user.rotation = player.rotation;
+
+    socket.emit('sync', user);
+  }
+
+  // multiplayer
+
+  socket.on('sync', st => {
+    state = st;
   });
 
   return game;
