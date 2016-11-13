@@ -50,6 +50,8 @@ function multiplayer (io) {
 
   // Game loop
   setInterval(() => {
+    const now = Date.now();
+    state.bullets = state.bullets.filter(b => b.t + 2500 >  now);
     for (let bullet of state.bullets) {
       bullet.x += 10 * Math.cos(bullet.rotation);
       bullet.y += 10 * Math.sin(bullet.rotation);
