@@ -1,7 +1,8 @@
 const uuid = require('node-uuid');
 
 const state = {
-  users: []
+  users: [],
+  bullets: []
 };
 
 function multiplayer (io) {
@@ -30,6 +31,13 @@ function multiplayer (io) {
       }
     });
 
+    client.on('shoot', data => {
+      data.bullet.id = uuid.v4();
+      data.bullet.t = Date.now();
+      state.bullets.push(data.bullet);
+      client.broadcast.emit('sync', state);
+    });
+
     client.on('disconnect', function() {
       if (user) {
         state.users = state.users.filter(u => u.id !== user.id);
@@ -39,6 +47,17 @@ function multiplayer (io) {
       }
     });
   });
+
+  // Game loop
+  setInterval(function() {
+    for (let bullet of state.bullets) {
+      bullet.x += 10 * Math.cos(bullet.rotation);
+      bullet.y += 10 * Math.sin(bullet.rotation);
+    }
+    io.emit('sync', state);
+  }, 30);
 }
+
+
 
 module.exports = multiplayer;

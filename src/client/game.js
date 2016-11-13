@@ -3,12 +3,14 @@ const socket = require('./socket');
 function runGame (elementId, user) {
   const game = new Phaser.Game('100%', '100%', Phaser.CANVAS, elementId, { create, update, preload });
   let state = {
-    users: []
+    users: [],
+    bullets: []
   };
 
   let player;
   let weapon;
   let enemies = [];
+  let bullets = [];
   let cursors;
   let fireButton;
 
@@ -65,7 +67,7 @@ function runGame (elementId, user) {
 
     // The bullets will be automatically killed when they are 2.5s old
     weapon.bulletKillType = Phaser.Weapon.KILL_LIFESPAN;
-    weapon.bulletLifespan = 2500;
+    weapon.bulletLifespan = 10;
 
     //  The speed at which the bullet is fired
     weapon.bulletSpeed = 400;
@@ -74,7 +76,7 @@ function runGame (elementId, user) {
     weapon.fireRate = 200;
 
     //  Wrap bullets around the world bounds to the opposite side
-    weapon.bulletWorldWrap = true;
+    // weapon.bulletWorldWrap = true;
 
     player = game.add.sprite(user.x, user.y, game.cache.getBitmapData('userShip'));
 
@@ -119,7 +121,18 @@ function runGame (elementId, user) {
     }
 
     if (fireButton.isDown) {
-      weapon.fire();
+      let bullet = weapon.fire();
+      if (bullet) {
+        let data = {
+          bullet: {
+            x: bullet.x,
+            y: bullet.y,
+            rotation: bullet.rotation
+          },
+          owner: user
+        };
+        socket.emit('shoot', data);
+      }
     }
 
     // game.world.wrap(player, 16);
@@ -139,6 +152,22 @@ function runGame (elementId, user) {
           enemy.y = u.y;
           enemy.rotation = u.rotation;
         }
+      }
+    }
+
+    for (let b of state.bullets) {
+      let bullet = bullets.find(bu => bu.id === b.id);
+      if (!bullet) {
+        // new bullet appered - render it
+        bullet = game.add.sprite(b.x, b.y, game.cache.getBitmapData('bullet'));
+        bullet.anchor.set(0.5);
+        bullet.rotation = b.rotation;
+        bullet.id = b.id;
+        bullets.push(bullet);
+      } else {
+        // change position of the existing one
+        bullet.x = b.x;
+        bullet.y = b.y;
       }
     }
 
