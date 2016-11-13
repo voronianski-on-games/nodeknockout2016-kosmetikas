@@ -3,6 +3,7 @@ const swig = require('swig');
 const express = require('express');
 const logger = require('morgan');
 const serveBase = require('./middlewares/serveBase');
+const multiplayer = require('./multiplayer');
 
 const app = express();
 const http = require('http').Server(app);
@@ -19,14 +20,7 @@ app.use(express.static(path.join(__dirname, '../../public')));
 
 app.get('/', serveBase());
 
-io.on('connection', client => {
-  console.log('user connected');
-  client.on('join-game', user => {
-    console.log(user);
-    client.emit('user', user);
-    client.broadcast.emit('rival', user);
-  });
-});
+multiplayer(io);
 
 http.listen(app.get('port'), () => {
   console.log('Node app is running at http://localhost:' + app.get('port'));
